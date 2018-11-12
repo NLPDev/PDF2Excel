@@ -15,6 +15,10 @@ import sys
 import pdftables_api
 from PyPDF2 import PdfFileWriter, PdfFileReader
 
+import xlrd
+
+from openpyxl import Workbook
+
 if len(sys.argv) < 3:
     command = os.path.basename(__file__)
     sys.exit('Usage: {} pdf-file page-number, ...'.format(command))
@@ -50,7 +54,39 @@ pdf_file_selected_pages = pdf_input_file + '.tmp'
 with open(pdf_file_selected_pages, 'wb') as f:
    pdf_writer_selected_pages.write(f)
 
-c = pdftables_api.Client("rylxfsmhrpxj")
+c = pdftables_api.Client("idp25x9arr5m")
 c.xlsx(pdf_file_selected_pages, excel_output_file) #use c.xlsx_single here to output all pages to a single Excel sheet
 print("Complete")
 os.remove(pdf_file_selected_pages)
+
+wbr=xlrd.open_workbook(excel_output_file)
+wb=Workbook()
+
+shw = wb.active
+shw.title = 'Sheet'
+res=["", "", ""]
+cnt=0
+
+cell=shw.cell(row=1, column=1)
+cell.value="Song Title"
+
+cell=shw.cell(row=2, column=2)
+cell.value="Publisher"
+
+cell=shw.cell(row=3, column=3)
+cell.value="Writer"
+
+for shr in wbr.sheet_names():
+    for i in range(35):
+        cnt=cnt+1
+        for j in range(3):
+            if len(wbr.sheet_by_name(shr).cell_value(i+2, j))>0:
+                res[j]=wbr.sheet_by_name(shr).cell_value(i+2, j)
+
+            cell=shw.cell(row=cnt+1, column=j+1)
+            cell.value=res[j]
+
+wb.save("res.xlsx")
+
+
+
