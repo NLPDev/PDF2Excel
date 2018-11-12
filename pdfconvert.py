@@ -25,7 +25,7 @@ pages_required = [int(p) for p in filter(None, pages_args.split(","))]
 
 print("Converting pages: {}".format(str(pages_required)[1:-1]))
 
-excel_output_file = pdf_input_file + '.xlsx'
+excel_output_file = pdf_input_file[0: len(pdf_input_file)-4] + '.xlsx'
 
 pages_out_of_range = []
 pdf_file_reader = PdfFileReader(open(pdf_input_file, 'rb'))
