@@ -33,9 +33,21 @@ if len(pages_out_of_range) > 0:
 
 pdf_writer_selected_pages = PdfFileWriter()
 
-for page_number in pages_required:
-    page = pdf_file_reader.getPage(page_number-1)
-    pdf_writer_selected_pages.addPage(page)
+stp=pages_required[0]
+endp=pdf_file_pages
+
+if len(pages_required)==2:
+    endp=pages_required[1]
+
+
+#
+# for page_number in pages_required:
+#     page = pdf_file_reader.getPage(page_number-1)
+#     pdf_writer_selected_pages.addPage(page)
+
+for page_number in range(stp, endp):
+    page=pdf_file_reader.getPage(page_number-1)
+    pdf_writer_selected_pages._addPage(page)
 
 pdf_file_selected_pages = pdf_input_file + '.tmp'
 
