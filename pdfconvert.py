@@ -47,7 +47,7 @@ if len(pages_required)==2:
 
 for page_number in range(stp, endp):
     page=pdf_file_reader.getPage(page_number-1)
-    pdf_writer_selected_pages._addPage(page)
+    pdf_writer_selected_pages.addPage(page)
 
 pdf_file_selected_pages = pdf_input_file + '.tmp'
 
@@ -70,21 +70,31 @@ cnt=0
 cell=shw.cell(row=1, column=1)
 cell.value="Song Title"
 
-cell=shw.cell(row=2, column=2)
+cell=shw.cell(row=1, column=2)
 cell.value="Publisher"
 
-cell=shw.cell(row=3, column=3)
+cell=shw.cell(row=1, column=3)
 cell.value="Writer"
+
 
 for shr in wbr.sheet_names():
     for i in range(35):
         cnt=cnt+1
-        for j in range(3):
-            if len(wbr.sheet_by_name(shr).cell_value(i+2, j))>0:
-                res[j]=wbr.sheet_by_name(shr).cell_value(i+2, j)
 
-            cell=shw.cell(row=cnt+1, column=j+1)
-            cell.value=res[j]
+        if len(wbr.sheet_by_name(shr).cell_value(i + 2, 0)) > 0:
+            for j in range(3):
+                res[j] = wbr.sheet_by_name(shr).cell_value(i + 2, j)
+
+                cell = shw.cell(row=cnt + 1, column=j + 1)
+                cell.value = res[j]
+        else:
+            for j in range(3):
+
+                if len(wbr.sheet_by_name(shr).cell_value(i + 2, j)) > 0:
+                    res[j] = wbr.sheet_by_name(shr).cell_value(i + 2, j)
+
+                cell = shw.cell(row=cnt + 1, column=j + 1)
+                cell.value = res[j]
 
 wb.save("res.xlsx")
 
