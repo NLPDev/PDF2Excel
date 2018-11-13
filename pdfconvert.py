@@ -1,15 +1,3 @@
-# from tabula import convert_into
-# import sys
-#
-# # if len(sys.argv)!=3:
-# #     print("Input pdf file name, csv file name!!")
-# # else:
-# #     convert_into("input.pdf", "out.csv", output_format="csv")
-#
-# convert_into("input01.pdf", "out.csv", output_format="csv", pages='8-9')
-
-
-
 import os
 import sys
 import pdftables_api
@@ -27,7 +15,7 @@ pdf_input_file = sys.argv[1];
 pages_args = ",".join(sys.argv[2:]).replace(" ","")
 pages_required = [int(p) for p in filter(None, pages_args.split(","))]
 
-print("Converting pages: {}".format(str(pages_required)[1:-1]))
+print("Converting pages(start, end page number): {}".format(str(pages_required)[1:-1]))
 
 excel_output_file = pdf_input_file[0: len(pdf_input_file)-4] + '.xlsx'
 
@@ -54,8 +42,8 @@ pdf_file_selected_pages = pdf_input_file + '.tmp'
 with open(pdf_file_selected_pages, 'wb') as f:
    pdf_writer_selected_pages.write(f)
 
-c = pdftables_api.Client("idp25x9arr5m")
-c.xlsx(pdf_file_selected_pages, excel_output_file) #use c.xlsx_single here to output all pages to a single Excel sheet
+c = pdftables_api.Client("idp25x9arr5m")    #This is PDFTable account API
+c.xlsx(pdf_file_selected_pages, excel_output_file)
 print("Complete")
 os.remove(pdf_file_selected_pages)
 
